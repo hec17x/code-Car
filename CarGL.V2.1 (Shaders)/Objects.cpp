@@ -257,7 +257,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                  if (escena.show_road) {
                 // Cálculo de la ModelView
-                modelMatrix     = glm::mat4(1.0f); // matriz identidad
+              modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx, ty, tz));
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
@@ -273,7 +273,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
 
-                   // Pintar la carretera
+                     // Pintar la carretera
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo1);
@@ -362,7 +362,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo11+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices11);
-/*
+
                 // Pintar los suelo edificio5
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -520,7 +520,6 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices30);
 
 
-
                  // Pintar los suelo solo
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -528,6 +527,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo31+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices31);
+
 
                   // Pintar los suelo edificio16
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
@@ -587,7 +587,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo38+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices38);
-**/
+
                 }
                 break;
         }
