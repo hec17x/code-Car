@@ -58,6 +58,7 @@
 // Nombre de los attributes
 #define A_POSITION  "a_Position"
 #define A_NORMAL    "a_Normal"
+#define A_UV        "a_UV"
 
 // Nombre de los uniforms
 #define U_PROJECTIONMATRIX      "u_ProjectionMatrix"
@@ -65,7 +66,7 @@
 #define U_VMATRIX               "u_VMatrix"
 #define U_COLOR                 "u_Color"
 #define U_LUZ0                  "u_Luz0"
-
+#define U_TEXTUREUNIT           "u_TextureUnit"
 //************************************************************** Clase TPrimtiva
 
 class TPrimitiva
@@ -225,6 +226,11 @@ public: // Atributos de la clase
 		int uVMatrixLocation;
 		int uColorLocation;
 		int uLuz0Location;
+
+        int aUV;
+
+        int uTextureUnit;
+
 
 		glm::mat4 projectionMatrix; // Almacena la matriz de proyección
         glm::mat4 viewMatrix;       // Almacena la matriz de la vista (cámara)

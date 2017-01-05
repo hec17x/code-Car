@@ -15,9 +15,11 @@
 
 #include "Objects.h"
 #include <GL/glui.h>
-
+#include "loadjpeg.c"
 #include "load3ds.c"
 
+unsigned char* textura ;
+GLuint idTextura[15];
 
 // Variable para inicializar los vectores correpondientes con los valores iniciales
 GLfloat light0_ambient_c[4]  = {   0.2f,   0.2f,  0.2f, 1.0f };
@@ -257,13 +259,13 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                  if (escena.show_road) {
                 // Cálculo de la ModelView
-              modelMatrix     = glm::mat4(1.0f); // matriz identidad
+                modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx, ty, tz));
-
+                modelMatrix     = glm::scale(modelMatrix,glm::vec3(2, 2, 2));
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
                 // Envía nuestra ModelView al Vertex Shader
                 glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
-
+/*
                 // Pintar Farolas
                 glUniform4fv(escena.uColorLocation, 1, colores[1]);
                 //                   Asociamos los vértices y sus normales
@@ -272,15 +274,21 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
-
+*/
                      // Pintar la carretera
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo1);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo1+3);
+                glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo1+6);
+
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, idTextura[0]);
+                glUniform1i(escena.uTextureUnit, 0);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices1);
-
+/*
                      // Pintar los semaforos
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -587,7 +595,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo38+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices38);
-
+*/
                 }
                 break;
         }
@@ -676,6 +684,8 @@ void __fastcall TEscena::InitGL()
 
     aPositionLocation=shaderProgram->attrib(A_POSITION);
     aNormalLocation=shaderProgram->attrib(A_NORMAL);
+    aUV=shaderProgram->attrib(A_UV);
+    uTextureUnit=shaderProgram->uniform(U_TEXTUREUNIT);
 
     uProjectionMatrixLocation=shaderProgram->uniform(U_PROJECTIONMATRIX);
     uMVMatrixLocation=shaderProgram->uniform(U_MVMATRIX);
@@ -697,6 +707,23 @@ void __fastcall TEscena::InitGL()
     // Habilitamos el paso de attributes
     glEnableVertexAttribArray(aPositionLocation);
     glEnableVertexAttribArray(aNormalLocation);
+    glEnableVertexAttribArray(aUV);
+
+    glGenTextures(15, idTextura);
+
+    int width;
+    int height;
+
+    width = 620;
+    height = 620;
+    textura = LoadJPEG("../../res/test.jpg", &width, &height);
+    glGenTextures(1, &idTextura[0]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    free(textura);
+
 
     // Estableciendo la matriz de proyección perspectiva
     GLUI_Master.get_viewport_area( &tx, &ty, &tw, &th );
