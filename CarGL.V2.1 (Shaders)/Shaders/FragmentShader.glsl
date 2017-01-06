@@ -10,6 +10,7 @@ void main()
 {
 
     		gl_FragColor = v_Color + texture2D(u_TextureUnit, v_UV);
+
     		//gl_FragColor = mix(texture2D(u_TextureUnit, v_UV), v_Color, 0.7);
 
 }

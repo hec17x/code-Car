@@ -258,7 +258,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         case ESCENARIO_ID: {
 
                  if (escena.show_road) {
-                // Cálculo de la ModelView
+               // Cálculo de la ModelView
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
                 modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx, ty, tz));
                 modelMatrix     = glm::scale(modelMatrix,glm::vec3(2, 2, 2));
@@ -276,6 +276,8 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
 */
                      // Pintar la carretera
+
+
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo1);
@@ -284,9 +286,11 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                 glActiveTexture(GL_TEXTURE0);
                 glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
                 glBindTexture(GL_TEXTURE_2D, idTextura[0]);
                 glUniform1i(escena.uTextureUnit, 0);
 
+            glDisable(GL_TEXTURE_2D);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices1);
 /*
                      // Pintar los semaforos
@@ -707,22 +711,36 @@ void __fastcall TEscena::InitGL()
     // Habilitamos el paso de attributes
     glEnableVertexAttribArray(aPositionLocation);
     glEnableVertexAttribArray(aNormalLocation);
-    glEnableVertexAttribArray(aUV);
+    if(aUV!=NULL)
+    {
+            glEnableVertexAttribArray(aUV);
+    }
+
 
     glGenTextures(15, idTextura);
 
     int width;
     int height;
 
-    width = 620;
-    height = 620;
-    textura = LoadJPEG("../../res/test.jpg", &width, &height);
+    width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/road.jpg", &width, &height);
     glGenTextures(1, &idTextura[0]);
     glBindTexture(GL_TEXTURE_2D, idTextura[0]);
+
     glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    free(textura);
+
 
 
     // Estableciendo la matriz de proyección perspectiva

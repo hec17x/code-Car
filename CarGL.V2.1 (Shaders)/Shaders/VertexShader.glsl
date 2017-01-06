@@ -11,6 +11,8 @@ uniform int  u_Luz0;                // in: Indica si la luz 0 está encedida
 
 varying vec4 v_Color;		        // out: Color al fragment shader
 varying vec2 v_UV;                  //out
+varying vec2 v_texCoord;
+
 void main()
 {
     v_UV = a_UV;
@@ -32,4 +34,6 @@ void main()
 	}
 	v_Color = u_Color * (ambient + diffuse);
 	gl_Position = u_ProjectionMatrix * vec4(P, 1.0);
+    v_texCoord = vec2(gl_MultiTexCoord0);
+
 }
