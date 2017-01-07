@@ -133,6 +133,7 @@ TPrimitiva::TPrimitiva(int DL, int t)
             modelo36 = Load3DS("../../Modelos/Suelo_solo1.3ds", &num_vertices36);
             modelo37 = Load3DS("../../Modelos/Suelo_solo2.3ds", &num_vertices37);
             modelo38 = Load3DS("../../Modelos/Suelo_solo3.3ds", &num_vertices38);
+            modelo39 = Load3DS("../../Modelos/acera.3ds", &num_vertices39);
             break;
 		}
 
@@ -265,16 +266,23 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
                 // Envía nuestra ModelView al Vertex Shader
                 glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
-/*
+
                 // Pintar Farolas
-                glUniform4fv(escena.uColorLocation, 1, colores[1]);
+                glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
+                glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+6);
+
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[2]);
+                glUniform1i(escena.uTextureUnit, 0);
 
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices0);
-*/
+
                      // Pintar la carretera
 
 
@@ -290,8 +298,27 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glBindTexture(GL_TEXTURE_2D, idTextura[0]);
                 glUniform1i(escena.uTextureUnit, 0);
 
-            glDisable(GL_TEXTURE_2D);
+                glDisable(GL_TEXTURE_2D);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices1);
+
+
+                      // Pintar la acera
+                glUniform4fv(escena.uColorLocation, 1, colores[0]);
+                //                   Asociamos los vértices y sus normales
+                glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo39);
+                glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo39+3);
+                glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo39+6);
+
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[1]);
+                glUniform1i(escena.uTextureUnit, 0);
+
+                glDisable(GL_TEXTURE_2D);
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices39);
+/*
+
 /*
                      // Pintar los semaforos
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
@@ -301,23 +328,39 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices2);
 
-
-                // Pintar los semaforos
+*/
+                // Pintar los bancos
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo3);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo3+3);
+                  glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo3+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[3]);
+                glUniform1i(escena.uTextureUnit, 0);
+
+                glDisable(GL_TEXTURE_2D);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices3);
-
-                  // Pintar los semaforos
+/*
+                  // Pintar los stop
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo4);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo4+3);
+                 glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo4+6);
 
-                glDrawArrays(GL_TRIANGLES, 0, num_vertices4);
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[4]);
+                glUniform1i(escena.uTextureUnit, 0);
 
+                glDisable(GL_TEXTURE_2D);
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices4);*/
+/*
                    // Pintar los edificio1
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -730,18 +773,88 @@ void __fastcall TEscena::InitGL()
 
     glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
     glGenerateMipmap(GL_TEXTURE_2D);
-
-   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     free(textura);
     glBindTexture(GL_TEXTURE_2D, 0);
     glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
     glEnableVertexAttribArray(2);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);;
 
 
+    width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/acera.jpg", &width, &height);
+    glGenTextures(1, &idTextura[1]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[1]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+      width = 300;
+    height = 300;
+    textura = LoadJPEG("../../res/tex3_farola.jpg", &width, &height);
+    glGenTextures(1, &idTextura[2]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[2]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/text3_banco.jpg", &width, &height);
+    glGenTextures(1, &idTextura[3]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[3]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        width = 620;
+    height = 620;
+    textura = LoadJPEG("../../res/test.jpg", &width, &height);
+    glGenTextures(1, &idTextura[4]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[4]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(0);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // Estableciendo la matriz de proyección perspectiva
     GLUI_Master.get_viewport_area( &tx, &ty, &tw, &th );

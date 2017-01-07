@@ -201,6 +201,9 @@ public: // Atributos de la clase
 		 float   *modelo38;        // modelo a representar
 		int     num_vertices38;   // número de vértices
 
+		 float   *modelo39;        // modelo a representar
+		int     num_vertices39;   // número de vértices
+
 public: // Métodos
  		TPrimitiva(int DL, int tipo);
         void __fastcall Render(int seleccion, bool reflejo=false);
