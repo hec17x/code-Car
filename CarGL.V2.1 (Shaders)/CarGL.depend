@@ -353,7 +353,7 @@
 	"Objects.h"
 	<GL/glui.h>
 
-1483368899 d:\repositorio\gc\code-car\cargl.v2.1 (shaders)\objects.h
+1483793665 d:\repositorio\gc\code-car\cargl.v2.1 (shaders)\objects.h
 	"Shader.h"
 	"Program.h"
 	<GL/glui.h>
@@ -372,9 +372,10 @@
 	<vector>
 	<GL/glew.h>
 
-1483371625 source:d:\repositorio\gc\code-car\cargl.v2.1 (shaders)\objects.cpp
+1483813095 source:d:\repositorio\gc\code-car\cargl.v2.1 (shaders)\objects.cpp
 	"Objects.h"
 	<GL/glui.h>
+	"loadjpeg.c"
 	"load3ds.c"
 
 1483368900 d:\repositorio\gc\code-car\cargl.v2.1 (shaders)\load3ds.c
@@ -429,6 +430,10 @@
 	<malloc.h>
 
 1483404628 c:\users\hector\desktop\cochegc\code-car\cargl.v2.1 (shaders)\loadjpeg.c
+	<stdio.h>
+	<malloc.h>
+
+1483368900 d:\repositorio\gc\code-car\cargl.v2.1 (shaders)\loadjpeg.c
 	<stdio.h>
 	<malloc.h>
 
