@@ -19,7 +19,7 @@
 #include "load3ds.c"
 
 unsigned char* textura ;
-GLuint idTextura[15];
+GLuint idTextura[55];
 
 // Variable para inicializar los vectores correpondientes con los valores iniciales
 GLfloat light0_ambient_c[4]  = {   0.2f,   0.2f,  0.2f, 1.0f };
@@ -360,48 +360,68 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                 glDisable(GL_TEXTURE_2D);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices4);*/
-/*
+
                    // Pintar los edificio1
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo5);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo5+3);
+                 glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo5+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[5]);
+                glUniform1i(escena.uTextureUnit, 0);
+
+                glDisable(GL_TEXTURE_2D);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices5);
 
-                    // Pintar los suelo edificio2
+ /*                   // Pintar los suelo edificio2
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo6);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo6+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices6);
-
+*/
                     // Pintar los edificio2
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo7);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo7+3);
+                    glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo7+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[6]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices7);
 
-                // Pintar los suelo edificio3
+/*                // Pintar los suelo edificio3
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo8);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo8+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices8);
-
+*/
                 // Pintar los edificio3
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo9);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo9+3);
+                  glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo9+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[7]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices9);
 
-
+/*
                 // Pintar los suelo edificio4
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -409,15 +429,21 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo10+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices10);
-
+*/
                  // Pintar los edificio4
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo11);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo11+3);
+                glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo11+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[8]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices11);
-
+/*
                 // Pintar los suelo edificio5
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -425,16 +451,22 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo12+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices12);
-
+*/
                 // Pintar los edificio5
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo13);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo13+3);
+                glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo13+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[9]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices13);
 
-
+/*
                 // Pintar los suelo edificio6
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -442,15 +474,21 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo14+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices14);
-
+*/
                 // Pintar los edificio6
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo15);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo15+3);
+                glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo15+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[10]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices15);
-
+/*
                  // Pintar los suelo edificio7
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -458,15 +496,21 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo16+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices16);
-
+*/
                 // Pintar los edificio7
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo17);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo17+3);
+                 glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo17+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[11]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices17);
-
+/*
                   // Pintar los suelo edificio8
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -474,15 +518,21 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo18+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices18);
-
+*/
                 // Pintar los edificio8
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo19);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo19+3);
+                 glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo19+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[12]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices19);
-
+/*
                   // Pintar los suelo edificio9
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -490,15 +540,21 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo20+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices20);
-
+*/
                 // Pintar los edificio9
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo21);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo21+3);
+                 glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo21+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[13]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices21);
-
+/*
                 // Pintar los suelo edificio10
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -506,14 +562,20 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo22+3);
 
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices22);
-
+*/
 
                 // Pintar los edificio10
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo23);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo23+3);
+                   glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo23+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[14]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices23);
 
                  // Pintar los edificio11
@@ -521,9 +583,15 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo24);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo24+3);
+                 glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo24+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[15]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices24);
-
+/*
                  // Pintar los edificio12
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -760,7 +828,7 @@ void __fastcall TEscena::InitGL()
     }
 
 
-    glGenTextures(15, idTextura);
+    glGenTextures(55, idTextura);
 
     int width;
     int height;
@@ -855,6 +923,212 @@ void __fastcall TEscena::InitGL()
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex_ed1.jpg", &width, &height);
+    glGenTextures(1, &idTextura[5]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[5]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+    width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex1_ed2.jpg", &width, &height);
+    glGenTextures(1, &idTextura[6]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[6]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+     width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex1_ed3.jpg", &width, &height);
+    glGenTextures(1, &idTextura[7]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[7]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+     width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex1_ed4.jpg", &width, &height);
+    glGenTextures(1, &idTextura[8]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[8]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+         width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex1_ed5.jpg", &width, &height);
+    glGenTextures(1, &idTextura[9]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[9]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+         width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex1_ed6.jpg", &width, &height);
+    glGenTextures(1, &idTextura[10]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[10]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex1_ed7.jpg", &width, &height);
+    glGenTextures(1, &idTextura[11]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[11]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+    width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex1_ed8.jpg", &width, &height);
+    glGenTextures(1, &idTextura[12]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[12]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+      width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex1_ed9.jpg", &width, &height);
+    glGenTextures(1, &idTextura[13]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[13]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+          width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex2_ed10.jpg", &width, &height);
+    glGenTextures(1, &idTextura[14]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[14]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+
+          width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex4_ed11.jpg", &width, &height);
+    glGenTextures(1, &idTextura[15]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[15]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 
     // Estableciendo la matriz de proyección perspectiva
     GLUI_Master.get_viewport_area( &tx, &ty, &tw, &th );
