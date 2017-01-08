@@ -41,7 +41,6 @@ GLfloat mat_shininess_c[1] = { 100.0f };
 float view_rotate_c[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float view_position_c[3] = { 0.0, -2.0, -9.0 };
 
-float coloresc_c[2][4] = { {0.8, 0.5, 0.0, 1.0}, {0.5, 0.5, 0.5, 1.0}}; // Color del coche
 float coloresr_c[2][4] = { {0.3, 0.3, 0.3, 1.0}, {1.0, 1.0, 1.0, 1.0}}; // Color de la carretera
 
 //************************************************************** Variables de clase
@@ -79,11 +78,10 @@ TPrimitiva::TPrimitiva(int DL, int t)
 		    tz =  0.0;
 		    rr =  0.0;
 
-		    memcpy(colores, coloresc_c, 8*sizeof(float));
 
             //************************ Cargar modelos 3ds ***********************************
             // formato 8 floats por vértice (x, y, z, A, B, C, u, v)
-            modelo0 = Load3DS("../../Modelos/FordF250.3ds", &num_vertices0);
+            modelo0 = Load3DS("../../Modelos/coche.3ds", &num_vertices0);
             modelo1 = Load3DS("../../Modelos/RuedaFord.3ds", &num_vertices1);
             break;
 		}
@@ -180,10 +178,15 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 // Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+3);
+                    glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo0+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[29]);
                 // Cálculo de la matriz modelo
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
-                modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx, ty, tz));
+                modelMatrix     = glm::translate(modelMatrix,glm::vec3(tx+2.25, ty+0.03, tz+2));
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
 
@@ -200,13 +203,41 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 // Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo1);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo1+3);
+                glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo1+6);
+
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[29]);
+                // RUEDA Delantera Izquierda : Cálculo de la matriz modelo
+                modelMatrix     = glm::mat4(1.0f); // matriz identidad
+
+                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx+2.10, ty+0.08, tz+1.7));
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));      // en radianes// en radianes
+                modelViewMatrix = escena.viewMatrix * modelMatrix;
+
+                // Envia nuestra ModelView al Vertex Shader
+                glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
+
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices1);
+
+                // RUEDA Trasera Derecha : Cálculo de la matriz modelo
+                modelMatrix     = glm::mat4(1.0f); // matriz identidad
+                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx+2.40, ty+0.08, tz+1.7));
+                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));
+                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(180.0), glm::vec3(0,1,0));
+                modelViewMatrix = escena.viewMatrix * modelMatrix;
+
+                // Envia nuestra ModelView al Vertex Shader
+                glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
+
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices1);
 
                 // RUEDA Delantera Izquierda : Cálculo de la matriz modelo
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
 
-                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx+0.95, ty+0.45, tz));
-                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));      // en radianes
-                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(180.0), glm::vec3(0,0,1));   // en radianes
+                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx+2.40, ty+0.08, tz+2.3));    // en radianes
+
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
 
@@ -217,34 +248,9 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                 // RUEDA Trasera Derecha : Cálculo de la matriz modelo
                 modelMatrix     = glm::mat4(1.0f); // matriz identidad
-                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx-0.95, ty+0.45, tz));
+                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx+2.10, ty+0.08, tz+2.3));
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));
-
-                modelViewMatrix = escena.viewMatrix * modelMatrix;
-
-                // Envia nuestra ModelView al Vertex Shader
-                glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
-
-                glDrawArrays(GL_TRIANGLES, 0, num_vertices1);
-
-                // RUEDA Delantera Izquierda : Cálculo de la matriz modelo
-                modelMatrix     = glm::mat4(1.0f); // matriz identidad
-
-                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx+0.95, ty+0.45, tz-4.24));
-                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));      // en radianes
                 modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(180.0), glm::vec3(0,0,1));   // en radianes
-
-                modelViewMatrix = escena.viewMatrix * modelMatrix;
-
-                // Envia nuestra ModelView al Vertex Shader
-                glUniformMatrix4fv(escena.uMVMatrixLocation, 1, GL_FALSE, &modelViewMatrix[0][0]);
-
-                glDrawArrays(GL_TRIANGLES, 0, num_vertices1);
-
-                // RUEDA Trasera Derecha : Cálculo de la matriz modelo
-                modelMatrix     = glm::mat4(1.0f); // matriz identidad
-                modelMatrix     = glm::translate(modelMatrix, glm::vec3(tx-0.95, ty+0.45, tz-4.24));
-                modelMatrix     = glm::rotate(modelMatrix, (float) glm::radians(rr), glm::vec3(1,0,0));
 
                 modelViewMatrix = escena.viewMatrix * modelMatrix;
 
@@ -317,18 +323,20 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                 glDisable(GL_TEXTURE_2D);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices39);
-/*
-
-/*
-                     // Pintar los semaforos
+                  // Pintar los semaforos
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo2);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo2+3);
+                    glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo2+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[2]);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices2);
 
-*/
+
                 // Pintar los bancos
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -344,7 +352,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                 glDisable(GL_TEXTURE_2D);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices3);
-/*
+
                   // Pintar los stop
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -359,7 +367,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glUniform1i(escena.uTextureUnit, 0);
 
                 glDisable(GL_TEXTURE_2D);
-                glDrawArrays(GL_TRIANGLES, 0, num_vertices4);*/
+                glDrawArrays(GL_TRIANGLES, 0, num_vertices4);
 
                    // Pintar los edificio1
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
@@ -753,15 +761,21 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices31);
 
-/*
+
                   // Pintar los suelo edificio16
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo32);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo32+3);
+                glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo32+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[30]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices32);
-*/
+
 
                  // Pintar los edificio16
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
@@ -777,15 +791,21 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices33);
 
-   /*                     // Pintar los suelo edificio17
+                        // Pintar los suelo edificio17
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo34);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo34+3);
+                 glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo34+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[28]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices34);
 
-*/
+
                  // Pintar los edificio17
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
@@ -799,13 +819,19 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glBindTexture(GL_TEXTURE_2D, idTextura[21]);
                 glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices35);
-/*
+
                   // Pintar los suelo solo1
                 glUniform4fv(escena.uColorLocation, 1, colores[0]);
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo36);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo36+3);
+                   glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo36+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[28]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices36);
 
 
@@ -814,7 +840,13 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo37);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo37+3);
+                glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo37+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[28]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices37);
 
                    // Pintar los suelo solo3
@@ -822,9 +854,15 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 //                   Asociamos los vértices y sus normales
                 glVertexAttribPointer(escena.aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo38);
                 glVertexAttribPointer(escena.aNormalLocation, NORMAL_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo38+3);
+                glVertexAttribPointer(escena.aUV, UV_COMPONENT_COUNT, GL_FLOAT, false, STRIDE, modelo38+6);
 
+                glActiveTexture(GL_TEXTURE0);
+                glEnable(GL_TEXTURE_2D);
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+                glBindTexture(GL_TEXTURE_2D, idTextura[28]);
+                glUniform1i(escena.uTextureUnit, 0);
                 glDrawArrays(GL_TRIANGLES, 0, num_vertices38);
-*/
+
                 }
                 break;
         }
@@ -1484,6 +1522,65 @@ void __fastcall TEscena::InitGL()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+    width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/text_chevrolet.jpg", &width, &height);
+    glGenTextures(1, &idTextura[29]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[29]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+       width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex1_ed4.jpg", &width, &height);
+    glGenTextures(1, &idTextura[30]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[30]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+           width = 512;
+    height = 512;
+    textura = LoadJPEG("../../res/tex1_suelosolo.jpg", &width, &height);
+    glGenTextures(1, &idTextura[31]);
+    glBindTexture(GL_TEXTURE_2D, idTextura[31]);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textura);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    free(textura);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+
+
 
     // Estableciendo la matriz de proyección perspectiva
     GLUI_Master.get_viewport_area( &tx, &ty, &tw, &th );

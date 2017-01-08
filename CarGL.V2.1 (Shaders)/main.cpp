@@ -92,23 +92,38 @@ void Keyboard(unsigned char Key, int x, int y)
 
 /**************************************** mySpecialKey() *************/
 
+static int MAXGIRO=50;
+static float RAD=0.01745329251;
 static void SpecialKey(int key, int x, int y)
 {
     TPrimitiva *car = escena.GetCar(escena.seleccion);
 
-    switch (key)
+
+     switch (key)
     {
         case GLUT_KEY_UP:   // El coche avanza
+            car->rr-=8;
+            car->tz -= 0.05;
+            break;
+        case GLUT_KEY_DOWN:   // El coche retrocede
             car->rr+=8;
             car->tz += 0.05;
             break;
-        case GLUT_KEY_DOWN:   // El coche retrocede
+        case GLUT_KEY_RIGHT:   // El coche avanza
             car->rr-=8;
+            car->tx += 0.05;
+            car->tz -= 0.05;
+            break;
+        case GLUT_KEY_LEFT:   // El coche retrocede
+            car->rr+=8;
+            car->tx -= 0.05;
             car->tz -= 0.05;
             break;
     }
 
+
     glutPostRedisplay();
+
 }
 
 /***************************************** myGlutMenu() ***********/
@@ -121,6 +136,7 @@ void Menu( int value )
 void Mouse(int button, int button_state, int x, int y )
 {
     gui.Mouse(button, button_state, x, y);
+
 }
 
 void Render()
@@ -168,20 +184,15 @@ int main(int argc, char* argv[])
     GLUI_Master.set_glutIdleFunc( Idle );
 
     // Crea los objetos
-  /*  TPrimitiva *road = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+  /*  TPrimitiva *road = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);*/
     TPrimitiva *car1 = new TPrimitiva(1, COCHE_ID);
     TPrimitiva *car2 = new TPrimitiva(2, COCHE_ID);
+    car2->tx = -2.5;
+    car2->tz = 0;
 
-    car2->colores[0][0] = 0.3;
-    car2->colores[0][1] = 0.8;
-    car2->colores[0][2] = 0.4;
-    car2->colores[0][3] = 1.0;
-    car2->tx = 2;
-    car2->tz = 3;
-
-    escena.AddObject(road);
+/*    escena.AddObject(road);*/
     escena.AddCar(car1);
-    escena.AddCar(car2);*/
+    escena.AddCar(car2);
 
     TPrimitiva *escenario = new TPrimitiva(ESCENARIO_ID, ESCENARIO_ID);
 
